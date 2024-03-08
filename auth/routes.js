@@ -25,6 +25,7 @@ router.post("/signin", async (req, res) => {
     await services.incrementLoginAttempts(value.email);
     const userAfterIncrement = await services.findUserByEmail(value.email);
     if (userAfterIncrement.loginAttempts >= 3) {
+      await services.lockAccount(value.email);
       return res.status(401).json({ error: "account locked" });
     }
     return res.status(401).json({ error: "unauthorized" });
