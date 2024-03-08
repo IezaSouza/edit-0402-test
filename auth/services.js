@@ -92,6 +92,17 @@ async function resetLoginAttempts(email) {
   }
 }
 
+async function lockAccount(email) {
+  try {
+    await db
+      .getDB()
+      .collection(db.usersCollection)
+      .updateOne({ email: email }, { $set: { accountLocked: true } });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 module.exports = {
   findUserByID,
   findUserByEmail,
